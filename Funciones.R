@@ -6,7 +6,7 @@ crawley.plot <- function(y) {
   plot(c(0,3),
        c(min(y,mean(y)-s*4*qnorm(0.75)),max(y,mean(y)+s*4*qnorm(0.75))),
        xaxt="n",
-       xlab="",
+       xlab="Gráfica boxplot: Datos originales vs. Distribucion normal simulada",
        type="n",
        ylab="")
   # for your data's boxes and whiskers, centred at x = 1
@@ -17,8 +17,8 @@ crawley.plot <- function(y) {
   w1d <- quantile(y,0.09)
   w2d <- quantile(y,0.02)
   rect(0.8,bottom,1.2,top)
-  lines(c(0.8,1.2),c(mean(y),mean(y)),lty=3)
-  lines(c(0.8,1.2),c(median(y),median(y)))
+  lines(c(0.8,1.2),c(mean(y),mean(y)),lty=3, col="#922B21")
+  lines(c(0.8,1.2),c(median(y),median(y)), col="#1D8348")
   lines(c(1,1),c(top,w1u))
   lines(c(0.9,1.1),c(w1u,w1u))
   lines(c(1,1),c(w2u,w1u),lty=3)
@@ -39,7 +39,7 @@ crawley.plot <- function(y) {
   n9 <- mean(y)- s * 2* qnorm(0.75)
   n2 <- mean(y)- s * 3* qnorm(0.75)
   rect(1.8,n25,2.2,n75)
-  lines(c(1.8,2.2),c(mean(y),mean(y)),lty=3)
+  lines(c(1.8,2.2),c(mean(y),mean(y)),lty=3, col="#922B21")
   lines(c(2,2),c(n75,n91))
   lines(c(1.9,2.1),c(n91,n91))
   lines(c(2,2),c(n98,n91),lty=3)
@@ -48,11 +48,11 @@ crawley.plot <- function(y) {
   lines(c(1.9,2.1),c(n9,n9))
   lines(c(2,2),c(n9,n2),lty=3)
   lines(c(1.9,2.1),c(n2,n2),lty=3)
-  lines(c(1.2,1.8),c(top,n75),lty=3,col="gray")
-  lines(c(1.1,1.9),c(w1u,n91),lty=3,col="gray")
-  lines(c(1.1,1.9),c(w2u,n98),lty=3,col="gray")
-  lines(c(1.2,1.8),c(bottom,n25),lty=3,col="gray")
-  lines(c(1.1,1.9),c(w1d,n9),lty=3,col="gray")
-  lines(c(1.1,1.9),c(w2d,n2),lty=3,col="gray")
+  lines(c(1.2,1.8),c(top,n75),lty=3,col="#BB8FCE")
+  lines(c(1.1,1.9),c(w1u,n91),lty=3,col="#BB8FCE")
+  lines(c(1.1,1.9),c(w2u,n98),lty=3,col="#BB8FCE")
+  lines(c(1.2,1.8),c(bottom,n25),lty=3,col="#BB8FCE")
+  lines(c(1.1,1.9),c(w1d,n9),lty=3,col="#BB8FCE")
+  lines(c(1.1,1.9),c(w2d,n2),lty=3,col="#BB8FCE")
   # label the two boxes
-  axis(1,c(1,2),c("data","normal")) }
+  axis(1,c(1,2),c("Datos","Normal")) }
