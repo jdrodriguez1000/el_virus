@@ -13,7 +13,7 @@ library(stats)
 # 1. Exploracion general 
 glimpse(set_covid_original)
 
-# Resultado columnas 23 , filas 6.265.798
+# Resultado columnas 23 , filas 6.278.998
 # Cada dato informado corresponde a un caso de contagio de covid en Colombia
 
 
@@ -116,6 +116,8 @@ set_covid_original %>%
   summarise(total = sum(!is.na(`Código ISO del país`)),
             faltantes = sum(is.na(`Código ISO del país`))) %>% 
   View()
+
+
 # Resultados encontrados: 
 #                     1. Se debe actualizar el codigo del pais a 170
 #                     2. Actualizar el nombre de la columna a codpais
@@ -126,9 +128,38 @@ set_covid_original %>%
   summarise(total = sum(!is.na(`Nombre del país`)),
             faltantes = sum(is.na(`Nombre del país`))) %>% 
   View()
+
+set_covid_original %>% 
+  group_by(`Código ISO del país`, `Nombre del país`) %>% 
+  summarise(total = sum(!is.na(`Nombre del país`)),
+            faltantes = sum(is.na(`Nombre del país`))) %>% 
+  View()
+
 # Resultados encontrados: 
 #                     1. Se debe actualizar el nombre del país a Colombia
 #                     2. Actualizar el nombre de la variable a nompais
+#                     3. Se debe actualizar el codigo de pais de BRASIL 77, 78, 79, 80, 81, 84, 85, 86, 87 a 76
+#                     4. Actualizar el nombre del pais REPÚBLICA DOCIMINCANA a REPÚBLICA DOMINICANA
+#                     5. Actualizar el codigo FRANCIA de 270 a 250
+#                     6. Actualizar el nombre MEXICO a MÉXICO
+#                     7. Actualizar el nombre PANAMA a PANAMÁ
+#                     8. Actualizar el nombre PERU a PERÚ
+#                     9. Actualizar el nombre ARABIA SAUDÍ a ARABIA SAUDITA
+#                     10. Actualizar el nombre REINO UNIDO DE GRAN BRETAÑA E IRLANDA DEL NORTE a REINO UNIDO
+#                     11. Actualizar el nombre ESTADOS UNIDOS DE AMÉRICA a ESTADOS UNIDOS
+#                     12. Actualizar el nombre VENEUELA a VENEZUELA
+#                     13. Actualizar el codigo ESTADOS UNIDOS de 1249 a 840
+#                     14. Actualizar el codigo CHILE de 1152 a 152
+#                     15. Actualizar el codigo ECUADOR de 1239 a 218
+#                     16. Actualizar el codigo ITALIA de 1380 a 380
+#                     17. Actualizar el codigo PAÍSES BAJOS de 1528 a 528
+#                     18. Actualizar el codigo PERÚ de 1589 a 604
+#                     19. Actualizar el codigo PANAMÁ de 1580 a 591
+#                     20. Actualizar el codigo ESPAÑA de 1724 a 724
+#                     21. Actualizar el codigo CURAZAO de 1000 a 531
+#                     22. Actualizar el nombre TABATINGA a BRASIL
+#                     21. Actualizar el codigo BRASIL de NA a 76
+
 
 
 # Variable17 `Fecha de inicio de síntomas`
