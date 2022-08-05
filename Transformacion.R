@@ -42,8 +42,35 @@ dtf_casos <- dtf_casos %>%
 
 # Actualizacion del codigo y nombre del pais
 dtf_casos <- dtf_casos %>% 
-  mutate(codpais = ifelse(is.na(codpais), 170, codpais),
-         nompais = ifelse(is.na(nompais), "COLOMBIA", nompais))
+  mutate(nompais = ifelse(nompais == "TABATINGA", "BRASIL", nompais),
+         codpais = ifelse(nompais == "BRASIL" & is.na(codpais), 76, codpais),
+         codpais = ifelse(is.na(codpais), 170, codpais),
+         nompais = ifelse(is.na(nompais), "COLOMBIA", nompais),
+         codpais = ifelse(nompais == "BRASIL" & codpais != 76, 76, codpais),
+         nompais = ifelse(nompais == "REPÚBLICA DOCIMINCANA", "REPÚBLICA DOMINICANA", nompais),
+         codpais = ifelse(nompais == "FRANCIA" & codpais == 270, 250 , codpais),
+         nompais = ifelse(nompais == "MEXICO", "MÉXICO", nompais),
+         nompais = ifelse(nompais == "PANAMA", "PANAMÁ", nompais),
+         nompais = ifelse(nompais == "PERU", "PERÚ", nompais),
+         nompais = ifelse(nompais == "ARABIA SAUDÍ", "ARABIA SAUDITA", nompais),
+         nompais = ifelse(nompais == "REINO UNIDO DE GRAN BRETAÑA E IRLANDA DEL NORTE", "REINO UNIDO", nompais),
+         nompais = ifelse(nompais == "ESTADOS UNIDOS DE AMÉRICA", "ESTADOS UNIDOS", nompais),
+         nompais = ifelse(nompais == "VENEUELA", "VENEZUELA", nompais),
+         codpais = ifelse(nompais == "ESTADOS UNIDOS" & codpais == 1249, 840, codpais),
+         codpais = ifelse(nompais == "CHILE" & codpais == 1152, 152, codpais),
+         codpais = ifelse(nompais == "ECUADOR" & codpais == 1239, 218, codpais),
+         codpais = ifelse(nompais == "ITALIA" & codpais == 1380, 380, codpais),
+         codpais = ifelse(nompais == "PAÍSES BAJOS" & codpais == 1528, 528, codpais),
+         codpais = ifelse(nompais == "PERÚ" & codpais == 1589, 604, codpais),
+         codpais = ifelse(nompais == "PANAMÁ" & codpais == 1580, 591, codpais),
+         codpais = ifelse(nompais == "ESPAÑA" & codpais == 1724, 724, codpais),
+         codpais = ifelse(nompais == "CURAZAO" & codpais == 1000, 531, codpais))
+
+
+dtf_casos %>% 
+  group_by(codpais, nompais) %>% 
+  summarise(total = sum(!is.na(nompais))) %>% 
+  View()
 
 
 # Actualizacion de codigos y nombres de departamentos
