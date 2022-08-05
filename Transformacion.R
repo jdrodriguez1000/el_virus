@@ -67,12 +67,6 @@ dtf_casos <- dtf_casos %>%
          codpais = ifelse(nompais == "CURAZAO" & codpais == 1000, 531, codpais))
 
 
-dtf_casos %>% 
-  group_by(codpais, nompais) %>% 
-  summarise(total = sum(!is.na(nompais))) %>% 
-  View()
-
-
 # Actualizacion de codigos y nombres de departamentos
 dtf_casos <- dtf_casos %>% 
   mutate(nomdpto = ifelse(nomdpto == "BARRANQUILLA", "ATLANTICO", nomdpto),
