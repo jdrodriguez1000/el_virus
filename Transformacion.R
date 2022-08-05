@@ -108,7 +108,6 @@ dtf_casos <- dtf_casos %>%
          estado = ifelse(estado == "Recuperado" & !is.na(fmuerte), "Fallecido", estado))
 
 
-
 # Actualizacion fecha de recuperacion
 dtf_casos <- dtf_casos %>% 
   mutate(frecup = ifelse(estado == "Fallecido" & !is.na(frecup), NA, frecup))
@@ -122,7 +121,6 @@ dtf_casos <- dtf_casos %>%
   mutate(diasem = wday(fnotif, label = TRUE),
          nrosem = isoweek(fnotif))
 
-
 # Actualizacion del tipo de recuperacion
 dtf_casos <- dtf_casos %>% 
   mutate(trecup = ifelse(estado == "Activo" & is.na(trecup), "Aún sin recuperacion", trecup))
@@ -132,6 +130,7 @@ dtf_casos <- dtf_casos %>%
 dtf_casos <- dtf_casos %>% 
   select(idcaso, frepor, fnotif, nrosem, diasem, codpais, nompais, coddpto, nomdpto, codmpio, nommpio, edad, sexo,
          estado, nivel, ubicaso, tcontg, fsintomas, fdiagn, frecup, trecup, fmuerte)
+
 
 
 
