@@ -142,6 +142,15 @@ dtf_casos <- dtf_casos %>%
   mutate(diasem = wday(fnotif, label = TRUE),
          nrosem = isoweek(fnotif))
 
+
+# Actualizacion nrosem de la primera semana de 2022
+dtf_casos <- dtf_casos %>% 
+  mutate(nrosem = ifelse(year(fnotif) == "2022" &  nrosem == 52, 1, nrosem))
+
+dtf_casos %>% 
+  filter(year(fnotif) == "2022" & nrosem == 52) %>% 
+  View()
+
 # Actualizacion del tipo de recuperacion
 dtf_casos <- dtf_casos %>% 
   mutate(trecup = ifelse(estado == "Activo" & is.na(trecup), "Aún sin recuperacion", trecup))
@@ -151,6 +160,8 @@ dtf_casos <- dtf_casos %>%
 dtf_casos <- dtf_casos %>% 
   select(idcaso, frepor, fnotif, nrosem, diasem, codpais, nompais, coddpto, nomdpto, codmpio, nommpio, edad, sexo,
          estado, nivel, ubicaso, tcontg, fsintomas, fdiagn, frecup, trecup, fmuerte)
+
+
 
 
 
