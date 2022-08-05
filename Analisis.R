@@ -130,6 +130,7 @@ dtf_reportados <- dtf_reportados %>%
 
 
 # ---------  ESTADISTICOS DESCRIPTIVOS  SET DE DATOS REPORTADOS   --------------
+
 dtf_reportados %>% 
   summarise(minimo = min(total_registros),
             maximo = max(total_registros),
@@ -144,8 +145,6 @@ dtf_reportados %>%
             dcil1 = quantile(total_registros, 0.1),
             dcil9 = quantile(total_registros, 0.9)) %>% 
   View()
-
-
 
 
 # ---------------  GRAFICOS SET DE DATOS CASOS REPORTADOS  --------------------
@@ -237,4 +236,145 @@ dtf_casos %>%
   arrange(total_registros) %>% 
   head(20) %>% 
   View()
+
+
+# ----------------------    ESTADISTICOS DESCRIPTIVOS    ----------------------
+
+dtf_casos %>% 
+  summarise(fecha_minima = min(fnotif),
+            fecha_maxima = max(fnotif),
+            Rango = fecha_maxima - fecha_minima,
+            media = mean(fnotif),
+            mediana = median(fnotif)) %>% 
+  View()
+
+
+
+# ----------------------      GRÁFICO HISTOGRAMA          ----------------------
+
+ggplot(dtf_casos, aes(fnotif)) +
+  geom_histogram(bins = 30, fill = "#ABEBC6", color = "#5D6D7E") +
+  theme_bw() +
+  labs(title = "Gráfico contactos por fecha de notificacion",
+       x = "Fecha de notificacion",
+       y = "Número de casos")+
+  theme(axis.text.x = element_text(size = 7, angle = 90)) +
+  theme(axis.text.y = element_text(size = 7))
+
+
+
+# ----------------------      GRÁFICO BOXPLOT          ----------------------
+
+ggplot(dtf_casos, aes(fnotif)) +
+  geom_boxplot(alpha = 0.7, outlier.color = "red", outlier.shape = 10, outlier.size = 1) +
+  theme_bw() +
+  coord_flip() +
+  scale_fill_brewer(palette = "Blues") +
+  stat_boxplot(geom = "errorbar", width = 0.25, alpha = 0.5) +
+  labs(title = "Gráfico de cajas - Fecha de notificacion",
+       x = "Fecha de notificación",
+       y = "") +
+  theme(axis.text.x = element_text(size = 0))
+
+
+# ----------------------  GRÁFICO HISTOGRAMA POR AÑO    ----------------------
+
+ggplot(dtf_casos, aes(fnotif)) +
+  geom_histogram(bins = 30, fill = "#ABEBC6", color = "#5D6D7E", alpha = 0.5) +
+  theme_bw() +
+  labs(title = "Gráfico contactos por fecha de notificación",
+       x = "Fecha de notificación",
+       y = "Número de casos")+
+  theme(axis.text.x = element_text(size = 7, angle = 90)) +
+  theme(axis.text.y = element_text(size = 7)) +
+  facet_grid(cols = vars(year(dtf_casos$fnotif)))
+
+
+# ----------------------  DATA SET DE CASOS NOTIFICADOS    ----------------------
+
+#Creacion del set
+dtf_notificados <- dtf_casos %>% 
+  group_by(fnotif) %>% 
+  summarise(total_registros = sum(!is.na(fnotif)))
+
+# Adicion de columna de acumulados
+dtf_notificados <- dtf_notificados %>% 
+  mutate(registros_acumulados = cumsum(total_registros))
+
+# Cambio de nombre de columna
+dtf_notificados <- dtf_notificados %>% 
+  rename(fecha_notificacion = fnotif)
+
+
+
+# --------- ESTADISTICOS DESCRIPTIVOS  SET DE DATOS NOTIFICADOS  ---------------
+
+dtf_notificados %>% 
+  summarise(minimo = min(total_registros),
+            maximo = max(total_registros),
+            rango = maximo - minimo,
+            media = mean(total_registros),
+            mediana = median(total_registros),
+            desv_std = sd(total_registros),
+            varianza = var(total_registros),
+            perc25 = quantile(total_registros, 0.25),
+            perc75 = quantile(total_registros, 0.75),
+            rangoIC = perc75 - perc25,
+            dcil1 = quantile(total_registros, 0.1),
+            dcil9 = quantile(total_registros, 0.9)) %>% 
+  View()
+
+
+# ---------------  GRAFICOS SET DE DATOS CASOS NOTIFICADOS  --------------------
+
+# Grafico contagios notificados diarios
+ggplot(dtf_notificados, aes(fecha_notificacion, total_registros)) +
+  geom_col(fill = "#C39BD3", alpha = 0.5) +
+  theme_bw() +
+  labs(title = "Gráfico de Casos notificados",
+       x = "Fechas",
+       y = "Numero de casos") +
+  theme(axis.text.x = element_text(size = 7, angle = 90)) +
+  theme(axis.text.y = element_text(size = 7))
+
+# Grafico contagios notificados diarios tipo linea
+ggplot(dtf_notificados, aes(fecha_notificacion, total_registros)) +
+  geom_line(color = "#C39BD3") +
+  theme_bw() +
+  labs(title = "Gráfico de Casos notificados",
+       x = "Fechas",
+       y = "Número de casos") +
+  theme(axis.text.x = element_text(size = 7, angle = 90)) +
+  theme(axis.text.y = element_text(size = 7))
+
+# Grafico acumulado de contagios diarios 
+ggplot(dtf_notificados, aes(fecha_notificacion, registros_acumulados)) +
+  geom_point(color = "#C39BD3", alpha = 0.6) +
+  theme_bw() +
+  labs(title = "Gráfico de casos acumulados",
+       x = "Fechas",
+       y = "Casos reportados") +
+  theme(axis.text.x = element_text(size = 7, angle = 90)) +
+  theme(axis.text.y = element_text(size = 7))
+
+# Grafico boxplot
+ggplot(dtf_notificados, aes(total_registros)) +
+  geom_boxplot(alpha = 0.7, outlier.color = "red", outlier.shape = 10, outlier.size = 1) +
+  theme_bw() +
+  coord_flip() +
+  scale_fill_brewer(palette = "Blues") +
+  stat_boxplot(geom = "errorbar", width = 0.25, alpha = 0.5) +
+  labs(title = "Gráfico de casos notificados",
+       x = "Total registros",
+       y = "") +
+  theme(axis.text.x = element_text(size = 0))
+
+
+
+
+
+
+
+
+
 
